@@ -12,11 +12,15 @@ container_pdf, container_chat = st.columns([50, 50])
 
 
 def analyze_invoice(payload):
-    url = "https://1qukft6pvi.execute-api.us-east-1.amazonaws.com/v1"
+    url = "https://1qukft6pvi.execute-api.us-east-1.amazonaws.com/v1/openai"
     headers = {"Content-Type": "application/json"}
     response = requests.post(url,json=payload, headers=headers).json()
-    
-    df = pd.DataFrame({"Field":response.keys(),  "Value":response.values()})
+    keys,values = [], []
+    print(response)
+    for i in response["Extracted Information"]:
+        keys.append(i["Alias"])
+        values.append(i["Value"])
+    df = pd.DataFrame({"Field":keys,  "Value":values})
     return df
 
 # Streamlit UI
