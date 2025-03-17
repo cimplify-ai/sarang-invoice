@@ -15,11 +15,12 @@ def analyze_invoice(payload):
     url = "https://1qukft6pvi.execute-api.us-east-1.amazonaws.com/v1/inovice-automated"
     headers = {"Content-Type": "application/json"}
     response = requests.post(url,json=payload, headers=headers).json()
-    keys,values = [], []
+    keys,values = response.keys(), response.values()
     print(response)
-    for i in response["fields"]:
-        keys.append(i["Alias"])
-        values.append(i["Value"])
+    # for i in response["fields"]:
+    #     keys.append(i["Alias"])
+    #     values.append(i["Value"])
+
     df = pd.DataFrame({"Field":keys,  "Value":values})
     return df
 
@@ -49,7 +50,7 @@ elif selected == "Invoice OCR":
 
         # Process File
         with st.spinner("Extracting Invoice Data..."):
-            df = analyze_invoice({"file_content": base64.b64encode(file_bytes).decode("utf-8")})
+            df = analyze_invoice({"file_name": "4.pdf", "file_content": base64.b64encode(file_bytes).decode("utf-8")})
         if not df.empty:
             st.success("✅ Invoice Data Extracted Successfully!")
             st.dataframe(df)
