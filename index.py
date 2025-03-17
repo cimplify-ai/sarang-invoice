@@ -50,7 +50,7 @@ elif selected == "Invoice OCR":
 
         # Process File
         with st.spinner("Extracting Invoice Data..."):
-            df = analyze_invoice({"file_name": "4.pdf", "file_content": base64.b64encode(file_bytes).decode("utf-8")})
+            df = analyze_invoice({"file_name":uploaded_file.name, "file_content": base64.b64encode(file_bytes).decode("utf-8")})
         if not df.empty:
             st.success("✅ Invoice Data Extracted Successfully!")
             st.dataframe(df)
